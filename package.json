@@ -1,6 +1,6 @@
 {
-  "name": "react-flex-images",
-  "version": "0.3.1",
+  "name": "react-flex-images-yh",
+  "version": "0.0.2",
   "description": "A lightweight react wrapper for creating fluid galleries as seen on Flickr and Google Images.",
   "keywords": [
     "react",
@@ -19,7 +19,7 @@
   "types": "dist/types",
   "scripts": {
     "build": "rollup -c",
-    "start": "NODE_ENV=development rollup -c -w"
+    "start": "rollup -c -w"
   },
   "devDependencies": {
     "@rollup/plugin-babel": "^5.3.1",

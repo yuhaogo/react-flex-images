@@ -6,7 +6,7 @@ import replace from "@rollup/plugin-replace";
 import styles from "rollup-plugin-styles";
 import { terser } from "rollup-plugin-terser";
 
-const dev = process.env.NODE_ENV === "development";
+const dev = false;
 
 const config = [];
 

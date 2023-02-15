@@ -1,4 +1,10 @@
-import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from "react";
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import FlexImagesItem from "./FlexImagesItem";
 
 type FlexImagesHorizontalContainerProps = {
@@ -42,7 +48,9 @@ interface ChildrenWrap {
  *        <FlexImagesItem imgUrl={...} imgWidth={...} imgHeight={...} />
  *    </FlexImagesContainer>
  */
-function FlexImagesHorizontalContainer(props: FlexImagesHorizontalContainerProps) {
+function FlexImagesHorizontalContainer(
+  props: FlexImagesHorizontalContainerProps
+) {
   const { rowHeight = 300, maxRows = null, truncate = false } = props;
   const selfRef = useRef<HTMLInputElement | null>(null);
   const [, forceRender] = useReducer((s) => s + 1, 0);
@@ -84,7 +92,9 @@ function FlexImagesHorizontalContainer(props: FlexImagesHorizontalContainerProps
     let rowIndex = 1;
     let curRowWidth = 0;
     let rowItems: ChildrenWrap[] = [];
-    const maxWidth = selfRef.current.clientWidth - 2;
+    const maxWidth = Math.floor(
+      parseFloat(getComputedStyle(selfRef.current).width)
+    );
     let displayItems: ChildrenWrap[] = [];
     const childMargin = getChildMargin();
 
@@ -92,7 +102,13 @@ function FlexImagesHorizontalContainer(props: FlexImagesHorizontalContainerProps
     let childrenWrapList = React.Children.map(children, (child) => {
       if (!React.isValidElement(child)) return;
       const { imgWidth, imgHeight } = child.props;
-      return { child, imgWidth, imgHeight, width: 0, height: 0 } as ChildrenWrap;
+      return {
+        child,
+        imgWidth,
+        imgHeight,
+        width: 0,
+        height: 0,
+      } as ChildrenWrap;
     });
 
     // Calculate children width and height
@@ -114,8 +130,8 @@ function FlexImagesHorizontalContainer(props: FlexImagesHorizontalContainerProps
         const ratio = (maxWidth - marginInRow) / (curRowWidth - marginInRow);
         // Set the size of each element in this row
         rowItems.forEach((item) => {
-          item.width = Math.floor(item.width * ratio);
-          item.height = Math.floor(childWrap.height * ratio);
+          item.width = parseFloat((item.width * ratio).toFixed(2));
+          item.height = parseFloat((childWrap.height * ratio).toFixed(2));
         });
         // Add the current row to the list of rows
         displayItems.push(...rowItems);
@@ -157,10 +173,15 @@ function FlexImagesHorizontalContainer(props: FlexImagesHorizontalContainerProps
 
   return (
     <div ref={selfRef} className="flex-images">
-      {!selfRef.current && <div style={{ display: "none" }}>{props.children}</div>}
+      {!selfRef.current && (
+        <div style={{ display: "none" }}>{props.children}</div>
+      )}
       {selfRef.current && props.children && calc(props.children)}
     </div>
   );
 }
 
-export { type FlexImagesHorizontalContainerProps, FlexImagesHorizontalContainer };
+export {
+  type FlexImagesHorizontalContainerProps,
+  FlexImagesHorizontalContainer,
+};
